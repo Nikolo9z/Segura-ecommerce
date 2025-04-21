@@ -1,7 +1,7 @@
 "use client";
-import CarrouselMain from "@/components/carrousel-main";
-import CarrouselOffers from "@/components/carrousel-offers";
-import CarrouselProducts from "@/components/carrousel-products";
+import CarrouselMain from "@/components/CarrouselMain";
+import CarrouselOffers from "@/components/CarrouselOffers";
+import CarrouselProducts from "@/components/CarrouselProducts";
 import Categories from "@/components/Categories";
 
 

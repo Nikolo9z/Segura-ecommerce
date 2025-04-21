@@ -1,19 +1,10 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+import NavigationMenuMain from "@/components/NavigationMenuMain";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export default function Header() {
   // Definición de enlaces y categorías para el menú de navegación
@@ -46,8 +37,8 @@ export default function Header() {
   ];
 
   const navLinks = [
-    { href: "/productos", label: "Productos" },
-    { href: "/contacto", label: "Contacto" },
+    { href: "/productos", label: "PRODUCTOS" },
+    { href: "/contacto", label: "CONTACTO" },
   ];
 
   const { theme } = useTheme();
@@ -69,55 +60,8 @@ export default function Header() {
         <img className="h-14" src={logoSrc} alt="Logo" />
       </Link>
 
-      {/* Navegación principal */}
-      <NavigationMenu className="z-50">
-        <NavigationMenuList>
-          {/* Menú desplegable para categorías */}
-          <NavigationMenuItem className="relative">
-            <NavigationMenuTrigger className="font-clash-medium">Categorías</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] relative z-[999]">
-                {categories[0].items.map((item) => (
-                  <ListItem
-                    key={item.title}
-                    title={item.title}
-                    href={item.href}
-                    className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
-                  >
-                    {item.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          {/* Enlaces directos del menú */}
-          {navLinks.map((link) => (
-            <NavigationMenuItem key={link.href}>
-              <NavigationMenuLink asChild>
-                <Link href={link.href} className={navigationMenuTriggerStyle()}>
-                  {link.label}
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          ))}
-
-          {/* Carrito con badge de cantidad */}
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link href="/carrito" className={navigationMenuTriggerStyle()}>
-                <div className="flex items-center">
-                  <span>Carrito</span>
-                  {/* Badge opcional para mostrar cantidad */}
-                  <span className="ml-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    3
-                  </span>
-                </div>
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+      {/* Menú de navegación */}
+      <NavigationMenuMain categories={categories} navLinks={navLinks} />
 
       {/* Acciones: tema y botones de autenticación */}
       <div className="flex items-center gap-4">
@@ -130,36 +74,5 @@ export default function Header() {
         </Link>
       </div>
     </header>
-  );
-}
-
-// Componente auxiliar para los elementos de la lista del menú desplegable
-function ListItem({
-  className,
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"a"> & {
-  title: string;
-}) {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <Link
-          href={href || "#"}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-clash-semibold leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
   );
 }
