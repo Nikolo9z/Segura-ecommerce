@@ -110,8 +110,8 @@ export default function CarrouselProducts() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/3" />
-          <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3" />
+          <CarouselPrevious  />
+          <CarouselNext  />
         </Carousel>
       </div>
     </div>

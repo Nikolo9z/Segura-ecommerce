@@ -41,7 +41,7 @@ import { Button } from './ui/button';
 export default function CarrouselMain() {
     const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
     return (
-      <div className="relative min-w-full">
+      <div className="relative min-w-full z-10">
         <Carousel
           plugins={[plugin.current]}
           className="min-w-full"

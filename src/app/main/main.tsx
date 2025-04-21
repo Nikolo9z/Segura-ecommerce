@@ -1,5 +1,6 @@
 "use client";
 import CarrouselMain from "@/components/carrousel-main";
+import CarrouselOffers from "@/components/carrousel-offers";
 import CarrouselProducts from "@/components/carrousel-products";
 import Categories from "@/components/Categories";
 
@@ -10,6 +11,7 @@ export function Main() {
     <CarrouselMain/>
     <CarrouselProducts/>
     <Categories/>
+    <CarrouselOffers/>
     
     </>
   );
