@@ -10,6 +10,7 @@ export function Main() {
     <CarrouselMain/>
     <CarrouselProducts/>
     <Categories/>
+    
     </>
   );
 }

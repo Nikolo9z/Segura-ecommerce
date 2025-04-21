@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
 
 export default function Header() {
   const navLinks = [
@@ -11,11 +13,23 @@ export default function Header() {
     { href: "/contacto", label: "Contacto" },
   ]
 
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  
+  // Este efecto se ejecuta solo en el lado del cliente
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Determina qué logo usar basado en el tema
+  const logoSrc = mounted && theme === "dark" ? "/logodark.webp" : "/logowhite.webp"
+  console.log(theme)
+
   return (
-    <header className="flex font-clash items-center justify-between px-6 py-4 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* Logo */}
+    <header className="flex font-clash items-center justify-between px-6 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      {/* Logo condicional */}
       <Link href="/" className="text-xl font-semibold tracking-tight">
-        🛍️ MiTienda
+        <img className="w-45 h-22" src={logoSrc} alt="Logo" />
       </Link>
 
       {/* Navegación en desktop */}
