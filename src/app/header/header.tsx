@@ -94,18 +94,18 @@ export default function Header() {
           {/* Enlaces directos del menú */}
           {navLinks.map((link) => (
             <NavigationMenuItem key={link.href}>
-              <Link href={link.href} legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink asChild>
+                <Link href={link.href} className={navigationMenuTriggerStyle()}>
                   {link.label}
-                </NavigationMenuLink>
-              </Link>
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           ))}
 
           {/* Carrito con badge de cantidad */}
           <NavigationMenuItem>
-            <Link href="/carrito" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink asChild>
+              <Link href="/carrito" className={navigationMenuTriggerStyle()}>
                 <div className="flex items-center">
                   <span>Carrito</span>
                   {/* Badge opcional para mostrar cantidad */}
@@ -113,8 +113,8 @@ export default function Header() {
                     3
                   </span>
                 </div>
-              </NavigationMenuLink>
-            </Link>
+              </Link>
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
