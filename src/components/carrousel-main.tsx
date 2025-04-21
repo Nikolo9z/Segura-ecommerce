@@ -1,16 +1,5 @@
 const carouselItems = [
   {
-    type: "single-image",
-    image: "p1.webp",
-    text: "RENUEVA TU CLOSET",
-  },
-  {
-    type: "double-image",
-    image1: "p4.webp",
-    image2: "p5.webp",
-    text: "NUEVAS COLECCIONES",
-  },
-  {
     type: "text-only",
     backgroundColor: "transparent",
     title: "OFERTAS ESPECIALES",
@@ -25,6 +14,18 @@ const carouselItems = [
     // textPosition: "right", // 'left' o 'right' para posicionar el texto
   },
   {
+    type: "single-image",
+    image: "p1.webp",
+    text: "RENUEVA TU CLOSET",
+  },
+  {
+    type: "double-image",
+    image1: "p4.webp",
+    image2: "p5.webp",
+    text: "NUEVAS COLECCIONES",
+  },
+
+  {
     type: "double-image",
     image1: "p6.webp",
     image2: "p7.webp",
@@ -35,6 +36,7 @@ import React, { useRef } from 'react'
 import { Card, CardContent } from './ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { Button } from './ui/button';
 
 export default function CarrouselMain() {
     const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
@@ -50,7 +52,7 @@ export default function CarrouselMain() {
           <CarouselContent>
             {carouselItems.map((item, index) => (
               <CarouselItem key={index}>
-                <Card className='py-0 rounded overflow-hidden'>
+                <Card className='py-0 rounded overflow-hidden font-clash-semibold text-stroke  dark:text-white'>
                   {item.type === "single-image" && (
                     <CardContent className="flex max-h-[25vw] w-full relative m-0 p-0">
                       <img
@@ -58,7 +60,7 @@ export default function CarrouselMain() {
                         alt={`Slide ${index + 1}`}
                         className="w-full h-full object-cover"
                       />
-                      <span className="absolute  text-4xl top-8 left-0 right-0 text-center font-clash-bold">
+                      <span className="absolute  text-4xl top-8 left-0 right-0 text-center ">
                         {item.text}
                       </span>
                     </CardContent>
@@ -82,7 +84,7 @@ export default function CarrouselMain() {
                           />
                         </div>
                       </div>
-                      <span className="absolute  text-4xl top-8 left-0 right-0 text-center font-semibold font-clash-bold">
+                      <span className="absolute  text-4xl bottom-8 left-0 right-0 text-center ">
                         {item.text}
                       </span>
                     </CardContent>
@@ -133,9 +135,9 @@ export default function CarrouselMain() {
                           {item.title}
                         </h2>
                         <p className=" text-xl mb-6">{item.subtitle}</p>
-                        <button className="bg-white text-gray-800 px-6 py-3 rounded-md font-semibold hover:bg-gray-200 transition-colors">
+                        <Button className=" text-gray-800 px-6 py-3 rounded-md hover:bg-gray-200 transition-colors">
                           {item.buttonText}
-                        </button>
+                        </Button>
                       </div>
                     </CardContent>
                   )}

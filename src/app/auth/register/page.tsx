@@ -8,7 +8,7 @@ import React from 'react'
 
 export default function Register() {
   return (
-    <div className="flex h-fit w-full items-center justify-center mt-30 p-6  md:p-10" >
+    <div className="flex h-fit w-full items-center justify-center mt-30 p-6  md:p-10 font-clash-regular" >
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Register</CardTitle>
