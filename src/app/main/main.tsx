@@ -10,34 +10,46 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import CarrouselMain from "@/components/carrousel-main";
+
+// Define los diferentes tipos de slides
+const carouselItems = [
+  {
+    type: "single-image",
+    image: "p1.webp",
+    text: "RENUEVA TU CLOSET",
+  },
+  {
+    type: "double-image",
+    image1: "p4.webp",
+    image2: "p5.webp",
+    text: "NUEVAS COLECCIONES",
+  },
+  {
+    type: "text-only",
+    backgroundColor: "transparent",
+    title: "OFERTAS ESPECIALES",
+    subtitle: "Hasta 50% de descuento en selección de productos",
+    buttonText: "Ver ofertas",
+    // Puedes añadir imágenes opcionales
+    image: "p2.webp", // Opcional: una sola imagen
+    textPosition: "left", // 'left' o 'right' para posicionar el texto
+    // O dos imágenes
+    // image1: "oferta1.webp",
+    // image2: "oferta2.webp",
+    // textPosition: "right", // 'left' o 'right' para posicionar el texto
+  },
+  {
+    type: "double-image",
+    image1: "p6.webp",
+    image2: "p7.webp",
+    text: "ACCESORIOS",
+  },
+];
 
 export function Main() {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
   return (
-    <div className="relative min-w-full">
-      <Carousel
-        plugins={[plugin.current]}
-        className="min-w-full"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
-        aria-hidden="true"
-      >
-        <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index}>
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex h-95 items-center justify-center">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 border-none "  />
-        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 border-none " />
-      </Carousel>
-    </div>
+    <CarrouselMain/>
   );
 }
