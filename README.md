@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Segura Ecommerce
 
-## Getting Started
+Este proyecto utiliza la API **AuthSegura**, diseñada para gestionar funcionalidades esenciales de un ecommerce. La API proporciona módulos para la administración de usuarios, CRUD de productos, creación de órdenes, entre otras características clave.
 
-First, run the development server:
+## Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Gestión de usuarios**: Registro, inicio de sesión, recuperación de contraseñas y administración de perfiles.
+- **CRUD de productos**: Crear, leer, actualizar y eliminar productos.
+- **Creación de órdenes**: Gestión de pedidos y su estado.
+- **Seguridad**: Autenticación y autorización robustas mediante la API AuthSegura que usa JWT.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Requisitos previos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js >= 14.x
+- API AuthSegura configurada y en funcionamiento
+- Base de datos compatible (por ejemplo, MongoDB, PostgreSQL)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Instalación
 
-## Learn More
+1. Clona este repositorio:
+    ```bash
+    git clone https://github.com/Nikolo9z/Segura-ecommerce
+    cd segura-ecommerce
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Instala las dependencias:
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Configura las variables de entorno en un archivo `.env`:
+    ```env
+    AUTHSEGURA_API_KEY=tu-api-key
+    DATABASE_URL=tu-url-de-base-de-datos
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Inicia el servidor:
+    ```bash
+    npm start
+    ```
 
-## Deploy on Vercel
+## Uso
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Usuarios**: Accede a los endpoints de autenticación para registrar y gestionar usuarios.
+- **Productos**: Utiliza los endpoints del CRUD para administrar el catálogo de productos.
+- **Órdenes**: Crea y gestiona órdenes a través de los endpoints correspondientes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contribución
+
+1. Haz un fork del repositorio.
+2. Crea una rama para tu funcionalidad o corrección:
+    ```bash
+    git checkout -b mi-nueva-funcionalidad
+    ```
+3. Realiza tus cambios y haz un commit:
+    ```bash
+    git commit -m "Agrega nueva funcionalidad"
+    ```
+4. Envía tus cambios:
+    ```bash
+    git push origin mi-nueva-funcionalidad
+    ```
+5. Abre un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la licencia [MIT](LICENSE).
+
+## Contacto
+
+Si tienes preguntas o sugerencias, no dudes en contactarme en [sanchez.nicolas.9917@gmail.com](mailto:sanchez.nicolas.9917@gmail.com).
