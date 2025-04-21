@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
-
   const navLinks = [
     { href: "/productos", label: "Productos" },
     { href: "/carrito", label: "Carrito" },
@@ -15,7 +13,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="flex items-center justify-between px-6 py-4 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* Logo */}
       <Link href="/" className="text-xl font-semibold tracking-tight">
         🛍️ MiTienda
