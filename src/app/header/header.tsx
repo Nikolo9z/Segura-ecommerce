@@ -39,7 +39,7 @@ export default function Header() {
   ];
 
   const navLinks = [
-    { href: "/productos", label: "PRODUCTOS" },
+    { href: "/products", label: "PRODUCTOS" },
     { href: "/buscar", label: "BUSCAR", isSearch: true }, // Nuevo enlace para búsqueda
     { href: "/contacto", label: "CONTACTO" },
   ];
