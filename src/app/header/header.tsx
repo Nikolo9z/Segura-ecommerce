@@ -76,13 +76,17 @@ export default function Header() {
 
       {/* Menú de navegación */}
       <div className="flex items-center">
-        <NavigationMenuMain 
-          categories={categories} 
-          navLinks={navLinks.filter(link => !link.isSearch)}
+        <NavigationMenuMain
+          categories={categories}
+          navLinks={navLinks.filter((link) => !link.isSearch)}
         />
-        
+
         {/* Buscador expandible */}
-        <div className={`transition-all duration-300 overflow-hidden ${searchOpen ? 'w-60 opacity-100 mr-4' : 'w-0 opacity-0'}`}>
+        <div
+          className={`transition-all duration-300 overflow-hidden ${
+            searchOpen ? "w-60 opacity-100 mr-4" : "w-0 opacity-0"
+          }`}
+        >
           <form onSubmit={handleSearch} className="relative">
             <Input
               type="text"
@@ -91,8 +95,8 @@ export default function Header() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="absolute right-2 top-1/2 transform -translate-y-1/2"
               aria-label="Buscar"
             >
@@ -100,11 +104,11 @@ export default function Header() {
             </button>
           </form>
         </div>
-        
+
         {/* Botón de búsqueda */}
-        <Button 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          variant="ghost"
+          size="sm"
           className="mr-2"
           onClick={() => setSearchOpen(!searchOpen)}
         >

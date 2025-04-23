@@ -12,7 +12,6 @@ export function Main() {
     <CarrouselProducts/>
     <Categories/>
     <CarrouselOffers/>
-    
     </>
   );
 }
