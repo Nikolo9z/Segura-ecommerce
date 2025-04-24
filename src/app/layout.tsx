@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Header from "./header/header";
+import { TanStackProviders } from "@/hooks/QueryClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
 <html lang="en" suppressHydrationWarning>
         <head />
         <body>
+          <TanStackProviders>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -37,6 +39,7 @@ export default function RootLayout({
             <Header/>
             {children}
           </ThemeProvider>
+          </TanStackProviders>
         </body>
       </html>
   );

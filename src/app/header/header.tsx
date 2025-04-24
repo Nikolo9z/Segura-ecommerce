@@ -1,15 +1,17 @@
 "use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import NavigationMenuMain from "@/components/NavigationMenuMain";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useAuthStore } from "@/stores/AuthStore";
 
 export default function Header() {
-  // Definición de enlaces y categorías para el menú de navegación
+  const user =useAuthStore((state) => state.user);
   const categories = [
     {
       title: "Categorías",
@@ -119,13 +121,21 @@ export default function Header() {
 
       {/* Acciones: tema y botones de autenticación */}
       <div className="flex items-center gap-4">
-        <ModeToggle />
-        <Link href="/auth/login" className="hidden md:inline-block">
-          <Button className="text-white">Login</Button>
-        </Link>
-        <Link href="/auth/register" className="hidden md:inline-block">
-          <Button className="text-white">Register</Button>
-        </Link>
+      <ModeToggle />
+        {user ? (
+          <Link href="/profile" className="hidden md:inline-block">
+            <Button className="text-white">{user.username}</Button>
+          </Link>
+        ) : (
+          <>
+          <Link href="/auth/login" className="hidden md:inline-block">
+            <Button className="text-white">Login</Button>
+          </Link>
+          <Link href="/auth/register" className="hidden md:inline-block">
+            <Button className="text-white">register</Button>
+          </Link>
+          </>
+        )}
       </div>
     </header>
   );

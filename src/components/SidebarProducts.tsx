@@ -31,11 +31,11 @@ const items = [
   ]
 function SidebarProducts({}: Props) {
   return (
-    <SidebarProvider>
-      <Sidebar className="z-50 w-64 relative ">
+    <SidebarProvider className='w-fit'>
+      <Sidebar className="z-50  relative border-r-background ">
         <SidebarContent className="bg-background border-r-none  font-clash-semibold ">
           <SidebarGroup>
-            <SidebarGroupLabel>Categorias</SidebarGroupLabel>
+            <SidebarGroupLabel className='text-lg'>Categorias</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="">
                 {items.map((item) => (
