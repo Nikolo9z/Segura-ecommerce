@@ -9,9 +9,10 @@ import { ModeToggle } from "@/components/ModeToggle";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useAuthStore } from "@/stores/AuthStore";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function Header() {
-  const user =useAuthStore((state) => state.user);
+  const user =useAuthStore((state) => state);
   const categories = [
     {
       title: "Categorías",
@@ -122,17 +123,24 @@ export default function Header() {
       {/* Acciones: tema y botones de autenticación */}
       <div className="flex items-center gap-4">
       <ModeToggle />
-        {user ? (
-          <Link href="/profile" className="hidden md:inline-block">
-            <Button className="text-white">{user.username}</Button>
-          </Link>
+        {user.isLoggedIn() ? (
+          <>
+          <DropdownMenu>
+          <DropdownMenuTrigger className="cursor-pointer bg-primary p-2 rounded w-20">{user.user?.username}</DropdownMenuTrigger>
+          <DropdownMenuContent className="cursor-pointer">
+            <DropdownMenuLabel>{user.user?.email}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => user.logout()}>Logout</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+          </>
         ) : (
           <>
           <Link href="/auth/login" className="hidden md:inline-block">
             <Button className="text-white">Login</Button>
           </Link>
           <Link href="/auth/register" className="hidden md:inline-block">
-            <Button className="text-white">register</Button>
+            <Button className="text-white">Register</Button>
           </Link>
           </>
         )}

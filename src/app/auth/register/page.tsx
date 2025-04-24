@@ -1,20 +1,23 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@radix-ui/react-label'
-import Link from 'next/link'
-import React from 'react'
-
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
+import Link from "next/link";
+import React from "react";
 
 export default function Register() {
   return (
-    <div className="flex h-fit w-full items-center justify-center mt-30 p-6  md:p-10 font-clash-regular" >
+    <div className="flex h-fit w-full items-center justify-center mt-30 p-6  md:p-10 font-clash-regular">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Register</CardTitle>
-          <CardDescription>
-            create an account to start shopping
-          </CardDescription>
+          <CardDescription>create an account to start shopping</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -56,7 +59,7 @@ export default function Register() {
               </div>
             </div>
             <div className="mt-4 text-center text-sm">
-                Already have an account?{" "}
+              Already have an account?{" "}
               <Link href="/auth/login" className="underline underline-offset-4">
                 Login
               </Link>
@@ -65,5 +68,5 @@ export default function Register() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
