@@ -11,87 +11,44 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-
-// Definir los tipos para las props
-type CategoryItem = {
-  title: string;
-  href: string;
-  description: string;
-};
+import { GetAllCategoriesResponse } from "@/types/GetAllCategoriesResponse";
 
 type NavigationMenuMainProps = {
-  categories: {
-    title: string;
-    items: CategoryItem[];
-  }[];
+  categories: GetAllCategoriesResponse[];
   navLinks: {
-    href: string;
     label: string;
+    href: string;
   }[];
 };
 
-export default function NavigationMenuMain({ categories, navLinks }: NavigationMenuMainProps) {
+export default function NavigationMenuMain({
+  categories,
+  navLinks,
+}: NavigationMenuMainProps) {
   return (
     <NavigationMenu className="z-50">
       <NavigationMenuList>
         {/* Menú desplegable para categorías */}
-        <NavigationMenuItem className="relative">
-          <NavigationMenuTrigger className="font-clash-medium">
-            MUJER
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] relative z-[999]">
-              {categories[0].items.map((item) => (
-                <ListItem
-                  key={item.title}
-                  title={item.title}
-                  href={item.href}
-                  className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
-                >
-                  {item.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="relative">
-          <NavigationMenuTrigger className="font-clash-medium">
-            HOMBRE
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] relative z-[999]">
-              {categories[0].items.map((item) => (
-                <ListItem
-                  key={item.title}
-                  title={item.title}
-                  href={item.href}
-                  className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
-                >
-                  {item.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="relative">
-          <NavigationMenuTrigger className="font-clash-medium">
-            HOGAR
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] relative z-[999]">
-              {categories[0].items.map((item) => (
-                <ListItem
-                  key={item.title}
-                  title={item.title}
-                  href={item.href}
-                  className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
-                >
-                  {item.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        {categories.map((category) => (
+          <NavigationMenuItem key={category.id} className="relative">
+            <NavigationMenuTrigger className="font-clash-medium">
+              {category.name.toUpperCase()}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent> 
+              <ul className="grid w-[200px] gap-1 md:w-[300px] md:grid-cols-2 lg:w-[300px] relative z-[999]">
+                {category.subCategories.map((subCategory) => (
+                  <ListItem
+                    key={subCategory.id}
+                    title={subCategory.name}
+                    href={`/category/${subCategory.id}`}
+                    className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
+                  >
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        ))}
 
         {/* Enlaces directos del menú */}
         {navLinks.map((link) => (
@@ -129,7 +86,9 @@ function ListItem({
           )}
           {...props}
         >
-          <div className="text-sm font-clash-semibold leading-none">{title}</div>
+          <div className="text-sm font-clash-semibold leading-none">
+            {title}
+          </div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>

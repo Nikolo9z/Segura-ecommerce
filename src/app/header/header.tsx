@@ -3,43 +3,25 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavigationMenuMain from "@/components/NavigationMenuMain";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useAuthStore } from "@/stores/AuthStore";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAllCategories } from "@/hooks/Category/useAllCategories";
 
 export default function Header() {
-  const user =useAuthStore((state) => state);
-  const categories = [
-    {
-      title: "Categorías",
-      items: [
-        {
-          title: "Camisas",
-          href: "/category/camisas",
-          description: "Camisas para toda ocasión",
-        },
-        {
-          title: "Pantalones",
-          href: "/category/pantalones",
-          description: "Pantalones de calidad para un look impecable",
-        },
-        {
-          title: "Trajes",
-          href: "/category/trajes",
-          description: "Trajes elegantes para ocasiones especiales",
-        },
-        {
-          title: "Accesorios",
-          href: "/category/accesorios",
-          description: "Complementos para elevar tu estilo",
-        },
-      ],
-    },
-  ];
+  const user = useAuthStore((state) => state);
+  const categories = useAllCategories();
 
   const navLinks = [
     { href: "/products", label: "PRODUCTOS" },
@@ -80,10 +62,9 @@ export default function Header() {
       {/* Menú de navegación */}
       <div className="flex items-center">
         <NavigationMenuMain
-          categories={categories}
+          categories={categories.data || []}
           navLinks={navLinks.filter((link) => !link.isSearch)}
         />
-
         {/* Buscador expandible */}
         <div
           className={`transition-all duration-300 overflow-hidden ${
@@ -122,26 +103,30 @@ export default function Header() {
 
       {/* Acciones: tema y botones de autenticación */}
       <div className="flex items-center gap-4">
-      <ModeToggle />
+        <ModeToggle />
         {user.isLoggedIn() ? (
           <>
-          <DropdownMenu>
-          <DropdownMenuTrigger className="cursor-pointer bg-primary p-2 rounded w-20">{user.user?.username}</DropdownMenuTrigger>
-          <DropdownMenuContent className="cursor-pointer">
-            <DropdownMenuLabel>{user.user?.email}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => user.logout()}>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="cursor-pointer bg-primary p-2 rounded w-20">
+                {user.user?.username}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="cursor-pointer">
+                <DropdownMenuLabel>{user.user?.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => user.logout()}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </>
         ) : (
           <>
-          <Link href="/auth/login" className="hidden md:inline-block">
-            <Button className="text-white">Login</Button>
-          </Link>
-          <Link href="/auth/register" className="hidden md:inline-block">
-            <Button className="text-white">Register</Button>
-          </Link>
+            <Link href="/auth/login" className="hidden md:inline-block">
+              <Button className="text-white">Login</Button>
+            </Link>
+            <Link href="/auth/register" className="hidden md:inline-block">
+              <Button className="text-white">Register</Button>
+            </Link>
           </>
         )}
       </div>
