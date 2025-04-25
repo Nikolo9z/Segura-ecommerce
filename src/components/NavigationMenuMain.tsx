@@ -40,7 +40,7 @@ export default function NavigationMenuMain({
                   <ListItem
                     key={subCategory.id}
                     title={subCategory.name}
-                    href={`/products/${category.id}`}
+                    href={`/products/${category.id}/${subCategory.id}`}
                     className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
                   >
                   </ListItem>
