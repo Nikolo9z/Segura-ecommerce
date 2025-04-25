@@ -11,4 +11,6 @@ export type GetAllProductsResponse = {
   categoryName: string;
   discountPercentage: number;
   finalPrice: number;
+  discountStartDate: string;
+  discountEndDate: string;
 }

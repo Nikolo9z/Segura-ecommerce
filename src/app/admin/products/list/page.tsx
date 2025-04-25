@@ -1,5 +1,4 @@
 "use client";
-
 import { useGetAllProducts } from "@/hooks/Products/useGetAllProducts";
 import {
   useReactTable,
@@ -18,48 +17,85 @@ import {
 import { GetAllProductsResponse } from "@/types/GetAllProductsResponse";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { AlertCircle, PlusCircle, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ModalProduct from "../ModalProduct";
+import { useState } from "react";
+import { CreateProductRequest } from "@/types/CreateProductRequest";
 
 function ProductsTable() {
   const productsData = useGetAllProducts();
-
-  // Acceder a los datos de forma segura
+  const [formOpen, setFormOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [currentProduct, setCurrentProduct] =
+    useState<CreateProductRequest | null>(null);
   const products = (productsData.data || []) as GetAllProductsResponse[];
-
-  // Helper para crear columnas
   const columnHelper = createColumnHelper<GetAllProductsResponse>();
 
-  // Función para formatear fechas en formato relativo
-  // Función para formatear fechas en formato relativo
+  const handleOpenCreateModal = () => {
+    setCurrentProduct(null); // Limpia cualquier producto que estuviera seleccionado
+    setIsEditMode(false); // No es modo edición
+    setFormOpen(true); // Abre el modal
+  };
+  const handleOpenEditModal = (product: GetAllProductsResponse) => {
+    // Convierte el producto al formato requerido por el modal
+    const editProduct: CreateProductRequest = {
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      categoryId: product.category,
+      imageUrl: product.imageUrl,
+      discountPercentage: product.discountPercentage,
+      discountStartDate: product.discountStartDate,
+      discountEndDate: product.discountEndDate,
+      // Añade otros campos según necesites
+    };
+
+    setCurrentProduct(editProduct);
+    setIsEditMode(true);
+    setFormOpen(true);
+  };
+  const handleSaveProduct = () => {
+    // Aquí añadirías la lógica para guardar el producto
+    console.log("Guardando producto:", currentProduct);
+
+    // Ejemplo simple:
+    if (isEditMode) {
+      // Lógica para actualizar un producto existente
+      console.log("Actualizando producto existente");
+    } else {
+      // Lógica para crear un nuevo producto
+      console.log("Creando nuevo producto");
+    }
+
+    // Cierra el modal después de guardar
+    setFormOpen(false);
+  };
   const formatDate = (dateString: string) => {
     try {
-      // Asegúrate de que la fecha sea válida
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
         return "Fecha inválida";
       }
 
-      // Formato para mostrar: DD/MM/YYYY
       return date.toLocaleDateString("es-ES", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
       });
-
-      // Alternativa: usa formatDistance solo si estás seguro de que las fechas son correctas
-      // return formatDistance(date, new Date(), {
-      //   addSuffix: true,
-      //   locale: es,
-      // });
     } catch (error) {
       return "Error de formato";
     }
   };
-
-  // Definir columnas con estilos mejorados
   const columns = [
     columnHelper.accessor("id", {
       header: "ID",
@@ -160,12 +196,22 @@ function ProductsTable() {
         const product = info.row.original;
         return (
           <div className="flex gap-2 items-center">
-            <Badge variant="outline" className="font-normal">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 px-2"
+              onClick={() => handleOpenEditModal(product)}
+            >
               Editar
-            </Badge>
-            <Badge variant="destructive" className="font-normal">
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              className="h-8 px-2"
+              onClick={() => console.log("Eliminar producto", product.id)}
+            >
               Eliminar
-            </Badge>
+            </Button>
           </div>
         );
       },
@@ -182,23 +228,20 @@ function ProductsTable() {
 
   return (
     <div className="container mx-auto h-full overflow-hidden">
-            <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-clash-bold">Gestión de Productos</h1>
           <p className="text-muted-foreground">
             Administra el catálogo de productos de tu tienda
           </p>
         </div>
-        <Button>
+        <Button onClick={handleOpenCreateModal}>
           <PlusCircle className="mr-2 h-4 w-4" /> Nuevo Producto
         </Button>
       </div>
       <div className="relative mb-6">
         <Search className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Buscar productos..."
-          className="pl-8"
-        />
+        <Input placeholder="Buscar productos..." className="pl-8" />
       </div>
       <div className="rounded-md">
         <Card>
@@ -294,6 +337,14 @@ function ProductsTable() {
             </Table>
           </CardContent>
         </Card>
+        <ModalProduct
+          formOpen={formOpen}
+          setFormOpen={setFormOpen}
+          currentProduct={currentProduct}
+          setCurrentProduct={setCurrentProduct}
+          isEditMode={isEditMode}
+          handleSaveProduct={handleSaveProduct}
+        />
       </div>
     </div>
   );
