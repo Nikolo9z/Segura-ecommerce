@@ -18,10 +18,10 @@ import {
 import { GetAllProductsResponse } from "@/types/GetAllProductsResponse";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatDistance } from "date-fns";
-import { es } from "date-fns/locale";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertCircle, PlusCircle, Search, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 function ProductsTable() {
   const productsData = useGetAllProducts();
@@ -33,31 +33,31 @@ function ProductsTable() {
   const columnHelper = createColumnHelper<GetAllProductsResponse>();
 
   // Función para formatear fechas en formato relativo
-// Función para formatear fechas en formato relativo
-const formatDate = (dateString: string) => {
-  try {
-    // Asegúrate de que la fecha sea válida
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return "Fecha inválida";
+  // Función para formatear fechas en formato relativo
+  const formatDate = (dateString: string) => {
+    try {
+      // Asegúrate de que la fecha sea válida
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "Fecha inválida";
+      }
+
+      // Formato para mostrar: DD/MM/YYYY
+      return date.toLocaleDateString("es-ES", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+
+      // Alternativa: usa formatDistance solo si estás seguro de que las fechas son correctas
+      // return formatDistance(date, new Date(), {
+      //   addSuffix: true,
+      //   locale: es,
+      // });
+    } catch (error) {
+      return "Error de formato";
     }
-    
-    // Formato para mostrar: DD/MM/YYYY
-    return date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-    
-    // Alternativa: usa formatDistance solo si estás seguro de que las fechas son correctas
-    // return formatDistance(date, new Date(), {
-    //   addSuffix: true,
-    //   locale: es,
-    // });
-  } catch (error) {
-    return "Error de formato";
-  }
-};
+  };
 
   // Definir columnas con estilos mejorados
   const columns = [
@@ -182,84 +182,119 @@ const formatDate = (dateString: string) => {
 
   return (
     <div className="container mx-auto h-full overflow-hidden">
-        <div className="rounded-md">
-          <Table>
-            <TableHeader className="bg-muted/50">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="hover:bg-transparent">
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      style={{
-                        width:
-                          header.getSize() !== 150
-                            ? header.getSize()
-                            : undefined,
-                      }}
-                      className="font-medium"
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {productsData.isLoading ? (
-                // Estado de carga
-                Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={`loading-${index}`} className="animate-pulse">
-                    {columns.map((col, colIndex) => (
-                      <TableCell
-                        key={`loading-cell-${index}-${colIndex}`}
-                        className="py-3"
-                      >
-                        <div className="h-4 bg-muted rounded w-full max-w-[100px]"></div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : table.getRowModel().rows.length ? (
-                // Renderizar filas cuando hay datos
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    className="hover:bg-muted/40 transition-colors"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="py-3">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-32 text-center"
-                  >
-                    <div className="flex flex-col items-center justify-center text-muted-foreground">
-                      <AlertCircle className="h-12 w-12 mb-2 text-muted" />
-                      <p className="text-lg font-medium">
-                        No hay productos disponibles
-                      </p>
-                      <p className="text-sm">
-                        Intenta modificar los filtros o agrega nuevos productos
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+            <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-clash-bold">Gestión de Productos</h1>
+          <p className="text-muted-foreground">
+            Administra el catálogo de productos de tu tienda
+          </p>
         </div>
+        <Button>
+          <PlusCircle className="mr-2 h-4 w-4" /> Nuevo Producto
+        </Button>
+      </div>
+      <div className="relative mb-6">
+        <Search className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar productos..."
+          className="pl-8"
+        />
+      </div>
+      <div className="rounded-md">
+        <Card>
+          <CardHeader>
+            <CardTitle>Productos ({productsData.data?.length || 0})</CardTitle>
+            <CardDescription>
+              Lista completa de productos en tu inventario
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader className="bg-muted/50">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow
+                    key={headerGroup.id}
+                    className="hover:bg-transparent"
+                  >
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        style={{
+                          width:
+                            header.getSize() !== 150
+                              ? header.getSize()
+                              : undefined,
+                        }}
+                        className="font-medium"
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {productsData.isLoading ? (
+                  // Estado de carga
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <TableRow
+                      key={`loading-${index}`}
+                      className="animate-pulse"
+                    >
+                      {columns.map((col, colIndex) => (
+                        <TableCell
+                          key={`loading-cell-${index}-${colIndex}`}
+                          className="py-3"
+                        >
+                          <div className="h-4 bg-muted rounded w-full max-w-[100px]"></div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : table.getRowModel().rows.length ? (
+                  // Renderizar filas cuando hay datos
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      className="hover:bg-muted/40 transition-colors"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="py-3">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-32 text-center"
+                    >
+                      <div className="flex flex-col items-center justify-center text-muted-foreground">
+                        <AlertCircle className="h-12 w-12 mb-2 text-muted" />
+                        <p className="text-lg font-medium">
+                          No hay productos disponibles
+                        </p>
+                        <p className="text-sm">
+                          Intenta modificar los filtros o agrega nuevos
+                          productos
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
