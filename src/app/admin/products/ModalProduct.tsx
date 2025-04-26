@@ -12,8 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
-import { GetAllProductsResponse } from "@/types/DTOs/GetAllProductsResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,6 +27,7 @@ import { CreateProductRequest } from "@/types/DTOs/CreateProductRequest";
 import { Product } from "@/types/Product";
 import { Category } from "@/types/Category";
 import { Checkbox } from "@/components/ui/checkbox";
+import { UpdateProductRequest } from "@/types/DTOs/UpdateProductRequest";
 
 const schema = z.object({
   name: z.string().min(1, { message: "El nombre es requerido" }),
@@ -65,7 +64,10 @@ type Props = {
   setFormOpen: (open: boolean) => void;
   currentProduct?: Product | null;
   iseditMode?: boolean;
-  handleSaveProduct?: (newProduct: CreateProductRequest) => void;
+  handleSaveProduct?: (
+    newProduct?: CreateProductRequest,
+    updateProduct?: UpdateProductRequest
+  ) => void;
   categories: Category[];
   setCurrentProduct?: (product: Product | null) => void;
 };
@@ -196,20 +198,38 @@ function ModalProduct({
     if (endDate && !endDate.includes("Z")) {
       endDate = new Date(endDate).toISOString();
     }
-
-    const productSubmit: CreateProductRequest = {
-      name: data.name,
-      price: data.price || 0,
-      description: data.description,
-      stock: data.stock || 0,
-      imageUrl: data.image || "",
-      categoryId: data.category || 0,
-      discountPercentage: data.applyDiscount ? data.discountPercentage || 0 : 0,
-      discountStartDate: startDate,
-      discountEndDate: endDate,
-    };
-
-    handleSaveProduct(productSubmit);
+    if (!iseditMode) {
+      const productSubmit: CreateProductRequest = {
+        name: data.name,
+        price: data.price || 0,
+        description: data.description,
+        stock: data.stock || 0,
+        imageUrl: data.image || "",
+        categoryId: data.category || 0,
+        discountPercentage: data.applyDiscount
+          ? data.discountPercentage || 0
+          : 0,
+        discountStartDate: startDate,
+        discountEndDate: endDate,
+      };
+      handleSaveProduct(productSubmit, undefined);
+    }
+    if (iseditMode && currentProduct) {
+      const productUpdate: UpdateProductRequest = {
+        id: currentProduct.id,
+        name: data.name,
+        price: data.price || 0,
+        description: data.description,
+        stock: data.stock || 0,
+        imageUrl: data.image || "",
+        categoryId: data.category || 0,
+        discountPercentage: data.discountPercentage || 0,
+        discountStartDate: startDate,
+        discountEndDate: endDate,
+        removeDiscount: !data.applyDiscount || false,
+      };
+      handleSaveProduct(undefined, productUpdate);
+    }
   };
 
   // Calcula el precio con descuento usando valores del formulario
@@ -272,8 +292,6 @@ function ModalProduct({
   return (
     <Dialog open={formOpen} onOpenChange={setFormOpen}>
       <DialogContent className="sm:max-w-[800px]">
-        {" "}
-        {/* Aumenté la anchura máxima para tener más espacio */}
         <DialogHeader>
           <DialogTitle>
             {iseditMode ? "Editar Producto" : "Agregar Nuevo Producto"}
@@ -400,9 +418,10 @@ function ModalProduct({
                     )}
                   </div>
                 </div>
+                {/* Checkbox de descuento */}
                 <div className="flex">
                   <Label htmlFor="applyDiscount" className="mr-2">
-                    {iseditMode ? "Quitar descuento" : "Aplicar descuento"}
+                    {iseditMode ? "Aplicar descuento" : "Aplicar descuento"}
                   </Label>
                   <Checkbox
                     id="applyDiscount"
@@ -419,6 +438,7 @@ function ModalProduct({
                   />
                 </div>
 
+                {/* Siempre mostrar los campos de descuento cuando applyDiscount es true */}
                 {applyDiscount && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="flex flex-col space-y-1.5">

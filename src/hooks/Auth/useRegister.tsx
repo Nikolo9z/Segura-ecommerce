@@ -12,7 +12,7 @@ export const useRegister = () => {
       return AuthService.register(data);
     },
     onSuccess: (data) => {
-      const { username, email, role } = data;
+      const { username, email, role } = data.data;
       if (role === "client" || role === "admin") {
         user({ username, email, role });
       } else {

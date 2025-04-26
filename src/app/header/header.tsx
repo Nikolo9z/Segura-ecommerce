@@ -18,10 +18,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAllCategories } from "@/hooks/Category/useAllCategories";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const user = useAuthStore((state) => state);
   const categories = useAllCategories();
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
+
+  // Este efecto solo se ejecuta en el cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const navLinks = [
     { href: "/products", label: "PRODUCTOS" },
@@ -62,7 +70,7 @@ export default function Header() {
       {/* Menú de navegación */}
       <div className="flex items-center">
         <NavigationMenuMain
-          categories={categories.data|| []}
+          categories={categories.data || []}
           navLinks={navLinks.filter((link) => !link.isSearch)}
         />
         {/* Buscador expandible */}
@@ -104,8 +112,8 @@ export default function Header() {
       {/* Acciones: tema y botones de autenticación */}
       <div className="flex items-center gap-4">
         <ModeToggle />
-        {user.isLoggedIn() ? (
-          <>
+        {isClient ? (
+          user.isLoggedIn() ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="cursor-pointer bg-primary p-2 rounded w-20">
                 {user.user?.username}
@@ -113,13 +121,27 @@ export default function Header() {
               <DropdownMenuContent className="cursor-pointer">
                 <DropdownMenuLabel>{user.user?.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push("/admin/products/list")}>
+                  Productos
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => user.logout()}>
                   Logout
                 </DropdownMenuItem>
+
               </DropdownMenuContent>
             </DropdownMenu>
-          </>
+          ) : (
+            <>
+              <Link href="/auth/login" className="hidden md:inline-block">
+                <Button className="text-white">Login</Button>
+              </Link>
+              <Link href="/auth/register" className="hidden md:inline-block">
+                <Button className="text-white">Register</Button>
+              </Link>
+            </>
+          )
         ) : (
+          // Mostrar un placeholder mientras se determina el estado de autenticación
           <>
             <Link href="/auth/login" className="hidden md:inline-block">
               <Button className="text-white">Login</Button>

@@ -35,7 +35,7 @@ type Props = {
   products: Product[];
   isLoading: boolean;
   handleOpenEditModal: (product: Product) => void;
-  deleteProduct: (productId: number) => void;
+  deleteProduct: (productId: Product) => void;
 };
 
 function TableProducts({
@@ -199,7 +199,7 @@ function TableProducts({
               variant="destructive"
               size="sm"
               className="h-8 px-2"
-              onClick={() => deleteProduct(product.id)}
+              onClick={() => deleteProduct(product)}
             >
               Eliminar
             </Button>
