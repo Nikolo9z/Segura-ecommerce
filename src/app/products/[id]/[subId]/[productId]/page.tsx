@@ -7,14 +7,13 @@ import { useParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ShoppingCart, Loader2 } from "lucide-react";
 import { notFound } from "next/navigation";
+import { useCartStore } from "@/stores/CartStore";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const productId = params.productId as string;
-  const categoryId = params.id as string;
-  const subcategoryId = params.subId as string;
-
+  const cartStore = useCartStore((state) => state);
   // Obtener los detalles del producto
   const { data: product, isLoading, error } = useGetProductById(productId);
 
@@ -82,7 +81,7 @@ export default function ProductDetailPage() {
                   </h1>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-clash-semibold text-primary">
-                      ${product.finalPrice.toFixed(2)}
+                      ${product.finalPrice}
                     </span>
 
                     {/* Precio con descuento */}
@@ -146,7 +145,10 @@ export default function ProductDetailPage() {
                 <div className="pt-4">
                   <Button
                     size="lg"
-                    onClick={handleAddToCart}
+                    onClick={() => cartStore.addToCart({
+                      ...product,
+                      quantity: 0
+                    })}
                     disabled={product.stock <= 0}
                     className="w-full font-clash-medium"
                   >

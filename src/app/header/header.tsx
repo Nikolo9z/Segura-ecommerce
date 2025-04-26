@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAllCategories } from "@/hooks/Category/useAllCategories";
 import { useRouter } from "next/navigation";
+import Cart from "@/components/Cart";
 
 export default function Header() {
   const user = useAuthStore((state) => state);
@@ -110,6 +111,7 @@ export default function Header() {
           Buscar
         </Button>
       </div>
+      <Cart/>
 
       {/* Acciones: tema y botones de autenticación */}
       <div className="flex items-center gap-4">
