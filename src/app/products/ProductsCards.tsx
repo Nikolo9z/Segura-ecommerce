@@ -43,7 +43,7 @@ function ProductsCards({ products }: Props) {
                 <div className="flex items-center gap-2 mt-auto">
                   {/* Mostrar precio con descuento si aplica */}
                   <span className="font-clash-semibold text-lg text-red-600">
-                    ${product.finalPrice.toFixed(2)}
+                    ${product.finalPrice}
                   </span>
                   {/* Mostrar precio original tachado solo si hay descuento */}
                   {product.isDiscountActive &&

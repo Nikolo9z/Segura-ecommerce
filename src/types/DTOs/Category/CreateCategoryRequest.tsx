@@ -1,4 +1,4 @@
-export type CreateCategoryRequest = {
+export interface CreateCategoryRequest {
   name: string;
-  parentCategoryId: number;
+  parentCategoryId?: number | null;
 }

@@ -1,11 +1,12 @@
 "use client";
 
 import { useGetAllProducts } from "@/hooks/Products/useGetAllProducts";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import TableProducts from "../DataTable";
 import ModalProduct from "../ModalProduct";
+import ModalCategories from "../ModalCategories";
 import { useAllCategories } from "@/hooks/Category/useAllCategories";
 import { CreateProductRequest } from "@/types/DTOs/Product/CreateProductRequest";
 import { Product } from "@/types/Product";
@@ -34,6 +35,8 @@ function ProductsList() {
   // Estados para el diálogo de confirmación de eliminación
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  // Estado para el modal de categorías
+  const [categoriesModalOpen, setCategoriesModalOpen] = useState(false);
 
   const handleOpenCreateModal = () => {
     setCurrentProduct(null);
@@ -78,6 +81,11 @@ function ProductsList() {
     setProductToDelete(null);
   };
 
+  // Función para abrir el modal de gestión de categorías
+  const handleOpenCategoriesModal = () => {
+    setCategoriesModalOpen(true);
+  };
+
   return (
     <div className="container mx-auto h-full overflow-hidden">
       <div className="flex justify-between items-center mb-8">
@@ -87,9 +95,14 @@ function ProductsList() {
             Administra el catálogo de productos de tu tienda
           </p>
         </div>
-        <Button onClick={handleOpenCreateModal}>
-          <PlusCircle className="mr-2 h-4 w-4" /> Nuevo Producto
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleOpenCategoriesModal}>
+            <Layers className="mr-2 h-4 w-4" /> Gestionar Categorías
+          </Button>
+          <Button onClick={handleOpenCreateModal}>
+            <PlusCircle className="mr-2 h-4 w-4" /> Nuevo Producto
+          </Button>
+        </div>
       </div>
       <TableProducts
         products={productsData.data || []}
@@ -105,6 +118,12 @@ function ProductsList() {
         iseditMode={isEditMode}
         handleSaveProduct={handleSaveProduct}
         categories={categories.data || []}
+      />
+
+      {/* Modal de gestión de categorías */}
+      <ModalCategories
+        modalOpen={categoriesModalOpen}
+        setModalOpen={setCategoriesModalOpen}
       />
 
       {/* Modal de confirmación para eliminar producto */}
