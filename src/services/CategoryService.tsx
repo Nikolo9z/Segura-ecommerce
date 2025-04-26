@@ -9,7 +9,7 @@ const api_url = "http://localhost:5068";
 export const CategoryService: ICategoryService = {
   getCategories: function (): Promise<GetAllCategoriesResponse> {
     return new Promise((resolve, reject) => {
-      fetch(`${api_url}/Product/category/root`, {
+      fetch(`${api_url}/categories/root`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const CategoryService: ICategoryService = {
   },
   getSubcategories: function (id: number): Promise<GetSubcategoriesResponse> {
     return new Promise((resolve, reject) => {
-      fetch(`${api_url}/Product/category/${id}/subcategories`, {
+      fetch(`${api_url}/categories/${id}/subcategories`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const CategoryService: ICategoryService = {
   },
   getCategoryById: function (id: string): Promise<Category> {
     return new Promise((resolve, reject) => {
-      fetch(`${api_url}/Product/category/${id}`, {
+      fetch(`${api_url}/categories/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const CategoryService: ICategoryService = {
     category: CreateCategoryRequest
   ): Promise<Category> {
     return new Promise((resolve, reject) => {
-      fetch(`${api_url}/Product/category/create`, {
+      fetch(`${api_url}/categories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export const CategoryService: ICategoryService = {
     category: UpdateCategoryRequest
   ): Promise<Category> {
     return new Promise((resolve, reject) => {
-      fetch(`${api_url}/Product/category/update`, {
+      fetch(`${api_url}/categories`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export const CategoryService: ICategoryService = {
   },
   deleteCategory: function (id: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      fetch(`${api_url}/Product/category/delete/${id}`, {
+      fetch(`${api_url}/categories/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

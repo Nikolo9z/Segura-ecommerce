@@ -6,6 +6,7 @@ import { useGetProductById } from "@/hooks/Products/useGetProductById";
 import { useParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ShoppingCart, Loader2 } from "lucide-react";
+import { notFound } from "next/navigation";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -40,17 +41,8 @@ export default function ProductDetailPage() {
   }
 
   if (error || !product) {
-    return (
-      <div className="container mx-auto text-center py-10">
-        <h2 className="text-2xl font-clash-bold mb-4">
-          Producto no encontrado
-        </h2>
-        <p className="mb-8 text-muted-foreground">
-          El producto que estás buscando no existe o no está disponible.
-        </p>
-        <Button onClick={handleGoBack}>Volver a la categoría</Button>
-      </div>
-    );
+    // Usar la función notFound() para activar nuestra página 404 personalizada
+    return notFound();
   }
 
   return (
@@ -112,7 +104,7 @@ export default function ProductDetailPage() {
                     product.price !== product.finalPrice && (
                       <div className="mt-2 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 px-3 py-2 rounded-md flex items-center">
                         <span className="text-sm font-clash-medium">
-                          ¡Oferta especial! Ahorra $
+                          ¡Oferta especial! Ahorra $$
                           {(product.price - product.finalPrice).toFixed(2)}
                         </span>
                       </div>

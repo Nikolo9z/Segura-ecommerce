@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Header from "./header/header";
 import { TanStackProviders } from "@/hooks/QueryClientProvider";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,21 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-<html lang="en" suppressHydrationWarning>
-        <head />
-        <body>
-          <TanStackProviders>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header/>
-            {children}
-          </ThemeProvider>
-          </TanStackProviders>
-        </body>
-      </html>
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body>
+        <TanStackProviders>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Header />
+              {children}
+            </ThemeProvider>
+          </AuthProvider>
+        </TanStackProviders>
+      </body>
+    </html>
   );
 }
