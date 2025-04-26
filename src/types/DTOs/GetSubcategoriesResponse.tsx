@@ -1,3 +1,4 @@
+import { SubCategory } from "../Category";
 export interface GetSubcategoriesResponse {
   id: number;
   name: string;
@@ -5,5 +6,5 @@ export interface GetSubcategoriesResponse {
   updatedAt: string;
   parentCategoryId: number;
   parentCategoryName: string;
-  subCategories: any[];
+  data: SubCategory[];
 }

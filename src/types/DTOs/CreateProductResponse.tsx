@@ -1,11 +1,19 @@
-export type CreateProductRequest = {
+export type CreateProductResponse = {
+  success: boolean;
+  message: string;
+  data: Data;
+}
+
+interface Data {
+  id: number;
   name: string;
   price: number;
   description: string;
   stock: number;
   imageUrl: string;
-  categoryId: number;
+  category: string;
   discountPercentage: number;
   discountStartDate: string;
   discountEndDate: string;
+  finalPrice: number;
 }

@@ -1,4 +1,4 @@
-export type GetAllProductsResponse = {
+export type Product = {
   id: number;
   name: string;
   description: string;
@@ -13,4 +13,5 @@ export type GetAllProductsResponse = {
   finalPrice: number;
   discountStartDate: string;
   discountEndDate: string;
-}
+  isDiscountActive: boolean;
+};

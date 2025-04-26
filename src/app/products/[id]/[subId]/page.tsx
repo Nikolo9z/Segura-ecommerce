@@ -29,7 +29,7 @@ function Page() {
           categories={subcategoriesQuery.data ?? []}
           onSelectSubcategory={handleSubcategoryClick}
         />
-        <ProductsCards products={productsQuery.data ?? []} />
+        <ProductsCards products={productsQuery.data || []} />
       </div>
     </div>
   );

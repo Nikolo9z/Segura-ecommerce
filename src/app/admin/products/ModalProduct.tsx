@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { GetAllCategoriesResponse } from "@/types/GetAllCategoriesResponse";
-import { GetAllProductsResponse } from "@/types/GetAllProductsResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
+import { GetAllProductsResponse } from "@/types/DTOs/GetAllProductsResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,10 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { CreateProductRequest } from "@/types/DTOs/CreateProductRequest";
+import { Product } from "@/types/Product";
+import { Category } from "@/types/Category";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const schema = z.object({
   name: z.string().min(1, { message: "El nombre es requerido" }),
@@ -51,6 +55,7 @@ const schema = z.object({
     .optional(),
   discountStartDate: z.string().optional(),
   discountEndDate: z.string().optional(),
+  applyDiscount: z.boolean().default(false).optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -58,10 +63,11 @@ type FormData = z.infer<typeof schema>;
 type Props = {
   formOpen: boolean;
   setFormOpen: (open: boolean) => void;
-  currentProduct?: GetAllProductsResponse | null;
+  currentProduct?: Product | null;
   iseditMode?: boolean;
-  handleSaveProduct?: () => void;
-  categories: GetAllCategoriesResponse[];
+  handleSaveProduct?: (newProduct: CreateProductRequest) => void;
+  categories: Category[];
+  setCurrentProduct?: (product: Product | null) => void;
 };
 
 function ModalProduct({
@@ -71,6 +77,7 @@ function ModalProduct({
   iseditMode,
   handleSaveProduct,
   categories,
+  setCurrentProduct,
 }: Props) {
   const {
     register,
@@ -92,6 +99,7 @@ function ModalProduct({
       discountPercentage: 0,
       discountStartDate: "",
       discountEndDate: "",
+      applyDiscount: false,
     },
   });
 
@@ -100,12 +108,43 @@ function ModalProduct({
   const formDiscount = watch("discountPercentage") || 0;
   const formImage = watch("image");
   const formName = watch("name");
+  const applyDiscount = watch("applyDiscount");
+
+  // Generar fechas por defecto con hora incluida
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString();
+  };
+
+  const getFutureDateISO = (daysToAdd = 4) => {
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + daysToAdd);
+    return futureDate.toISOString();
+  };
 
   // Este useEffect reinicia el formulario cuando cambia el modal o el producto
   useEffect(() => {
     if (formOpen) {
       if (currentProduct && iseditMode) {
         // Si estamos en modo edición y hay un producto, llenamos el form
+        const hasDiscount =
+          !!currentProduct.discountPercentage &&
+          currentProduct.discountPercentage > 0;
+
+        // Formatear las fechas para que sean compatibles con input datetime-local
+        let startDate = currentProduct.discountStartDate || "";
+        let endDate = currentProduct.discountEndDate || "";
+
+        // Convertir las fechas ISO a formato compatible con datetime-local
+        if (startDate && startDate.includes("Z")) {
+          // Formato YYYY-MM-DDThh:mm (sin segundos ni zona)
+          startDate = new Date(startDate).toISOString().slice(0, 16);
+        }
+
+        if (endDate && endDate.includes("Z")) {
+          endDate = new Date(endDate).toISOString().slice(0, 16);
+        }
+
         reset({
           name: currentProduct.name || "",
           category: currentProduct.category || 0,
@@ -114,8 +153,9 @@ function ModalProduct({
           stock: currentProduct.stock || 0,
           image: currentProduct.imageUrl || "",
           discountPercentage: currentProduct.discountPercentage || 0,
-          discountStartDate: currentProduct.discountStartDate || "",
-          discountEndDate: currentProduct.discountEndDate || "",
+          discountStartDate: startDate,
+          discountEndDate: endDate,
+          applyDiscount: hasDiscount,
         });
       } else {
         // Si estamos en modo crear, reseteamos el formulario
@@ -129,6 +169,7 @@ function ModalProduct({
           discountPercentage: 0,
           discountStartDate: "",
           discountEndDate: "",
+          applyDiscount: false,
         });
       }
     }
@@ -136,14 +177,46 @@ function ModalProduct({
 
   // Maneja el envío del formulario
   const onSubmit = (data: FormData) => {
-    if (handleSaveProduct) {
-      handleSaveProduct();
+    if (!handleSaveProduct) return;
+
+    // Procesar fechas correctamente
+    let startDate = data.applyDiscount
+      ? data.discountStartDate || getCurrentDate()
+      : getCurrentDate();
+
+    let endDate = data.applyDiscount
+      ? data.discountEndDate || getFutureDateISO(4)
+      : getFutureDateISO(4);
+
+    // Asegurarse de que las fechas estén en formato ISO
+    if (startDate && !startDate.includes("Z")) {
+      startDate = new Date(startDate).toISOString();
     }
+
+    if (endDate && !endDate.includes("Z")) {
+      endDate = new Date(endDate).toISOString();
+    }
+
+    const productSubmit: CreateProductRequest = {
+      name: data.name,
+      price: data.price || 0,
+      description: data.description,
+      stock: data.stock || 0,
+      imageUrl: data.image || "",
+      categoryId: data.category || 0,
+      discountPercentage: data.applyDiscount ? data.discountPercentage || 0 : 0,
+      discountStartDate: startDate,
+      discountEndDate: endDate,
+    };
+
+    handleSaveProduct(productSubmit);
   };
 
   // Calcula el precio con descuento usando valores del formulario
   const discountedPrice =
-    formDiscount > 0 ? formPrice - (formPrice * formDiscount) / 100 : formPrice;
+    applyDiscount && formDiscount > 0
+      ? formPrice - (formPrice * formDiscount) / 100
+      : formPrice;
 
   // Añade estas variables de estado para manejar las categorías y subcategorías
   const [selectedParentCategory, setSelectedParentCategory] = useState<
@@ -327,41 +400,63 @@ function ModalProduct({
                     )}
                   </div>
                 </div>
+                <div className="flex">
+                  <Label htmlFor="applyDiscount" className="mr-2">
+                    {iseditMode ? "Quitar descuento" : "Aplicar descuento"}
+                  </Label>
+                  <Checkbox
+                    id="applyDiscount"
+                    checked={watch("applyDiscount")}
+                    onCheckedChange={(checked) => {
+                      setValue("applyDiscount", checked === true);
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="discountPercentage">Porcentaje desc</Label>
-                    <Input
-                      id="discountPercentage"
-                      type="number"
-                      step="0.01"
-                      {...register("discountPercentage", {
-                        valueAsNumber: true,
-                      })}
-                    />
-                    {errors.discountPercentage && (
-                      <p className="text-sm text-red-500">
-                        {errors.discountPercentage.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="discountStartDate">Inicio Oferta</Label>
-                    <Input
-                      id="discountStartDate"
-                      type="date"
-                      {...register("discountStartDate")}
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="discountEndDate">Fin Oferta</Label>
-                    <Input
-                      id="discountEndDate"
-                      type="date"
-                      {...register("discountEndDate")}
-                    />
-                  </div>
+                      if (checked === false) {
+                        setValue("discountPercentage", 0);
+                        setValue("discountStartDate", getCurrentDate());
+                        setValue("discountEndDate", getFutureDateISO());
+                      }
+                    }}
+                  />
                 </div>
+
+                {applyDiscount && (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex flex-col space-y-1.5">
+                      <Label htmlFor="discountPercentage">
+                        Porcentaje desc
+                      </Label>
+                      <Input
+                        id="discountPercentage"
+                        type="number"
+                        step="0.01"
+                        {...register("discountPercentage", {
+                          valueAsNumber: true,
+                        })}
+                      />
+                      {errors.discountPercentage && (
+                        <p className="text-sm text-red-500">
+                          {errors.discountPercentage.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex flex-col space-y-1.5">
+                      <Label htmlFor="discountStartDate">Inicio Oferta</Label>
+                      <Input
+                        id="discountStartDate"
+                        type="datetime-local"
+                        {...register("discountStartDate")}
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-1.5">
+                      <Label htmlFor="discountEndDate">Fin Oferta</Label>
+                      <Input
+                        id="discountEndDate"
+                        type="datetime-local"
+                        {...register("discountEndDate")}
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="image">URL de Imagen</Label>
@@ -443,7 +538,7 @@ function ModalProduct({
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Descuento:</span>
                   <span className="font-medium text-orange-600">
-                    {formDiscount ? `${formDiscount}%` : "0%"}
+                    {applyDiscount && formDiscount ? `${formDiscount}%` : "0%"}
                   </span>
                 </div>
 
@@ -453,14 +548,14 @@ function ModalProduct({
                   <span className="text-sm font-medium">Precio final:</span>
                   <span
                     className={`text-lg font-bold ${
-                      formDiscount > 0 ? "text-green-600" : ""
+                      applyDiscount && formDiscount > 0 ? "text-green-600" : ""
                     }`}
                   >
                     ${discountedPrice.toFixed(2)}
                   </span>
                 </div>
 
-                {formDiscount > 0 && formPrice > 0 && (
+                {applyDiscount && formDiscount > 0 && formPrice > 0 && (
                   <div className="text-xs text-right text-muted-foreground">
                     Ahorras: ${(formPrice - discountedPrice).toFixed(2)}
                   </div>

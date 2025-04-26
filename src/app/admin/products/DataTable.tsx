@@ -11,7 +11,7 @@ import {
   TableCell,
   Table,
 } from "@/components/ui/table";
-import { GetAllProductsResponse } from "@/types/GetAllProductsResponse";
+import { Product } from "@/types/Product";
 import { formatDate } from "@/utils/formatDate";
 import {
   createColumnHelper,
@@ -32,9 +32,9 @@ import {
 import React, { useState } from "react";
 
 type Props = {
-  products: GetAllProductsResponse[];
+  products: Product[];
   isLoading: boolean;
-  handleOpenEditModal: (product: GetAllProductsResponse) => void;
+  handleOpenEditModal: (product: Product) => void;
   deleteProduct: (productId: number) => void;
 };
 
@@ -44,7 +44,7 @@ function TableProducts({
   handleOpenEditModal,
   deleteProduct,
 }: Props) {
-  const columnHelper = createColumnHelper<GetAllProductsResponse>();
+  const columnHelper = createColumnHelper<Product>();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
   const columns = [
@@ -110,21 +110,60 @@ function TableProducts({
         const product = info.getValue();
         return (
           <div className="flex gap-2 items-center">
-            {product.discountPercentage > 0 ? (
+            {product.isDiscountActive && product.discountPercentage > 0 ? (
               <>
-                <div className="font-medium">
+                <div className="font-medium text-green-600">
                   ${product.finalPrice.toFixed(2)}
                 </div>
                 <div className="text-xs text-muted-foreground line-through">
                   ${product.price.toFixed(2)}
                 </div>
-                <Badge variant="destructive" className="mt-1 text-xs">
+                <Badge variant="destructive" className="ml-1 text-xs">
                   -{product.discountPercentage}%
                 </Badge>
               </>
             ) : (
               <div className="font-medium">${product.price.toFixed(2)}</div>
             )}
+          </div>
+        );
+      },
+      size: 80,
+    }),
+    columnHelper.accessor((row) => row, {
+      id: "discountDates",
+      header: "Periodo de Oferta",
+      cell: (info) => {
+        const product = info.getValue();
+        if (
+          !product.discountStartDate ||
+          !product.discountEndDate ||
+          product.discountPercentage <= 0
+        ) {
+          return <span className="text-muted-foreground text-sm">-</span>;
+        }
+
+        const startDate = new Date(product.discountStartDate);
+        const endDate = new Date(product.discountEndDate);
+        const isActive = product.isDiscountActive;
+
+        // Formatear fechas en formato corto
+        const formattedStart = formatDate(product.discountStartDate);
+        const formattedEnd = formatDate(product.discountEndDate);
+
+        return (
+          <div className="flex flex-col gap-1">
+            <Badge
+              variant={isActive ? "default" : "secondary"}
+              className={`w-fit text-xs ${
+                isActive ? "bg-green-300 text-green-800 hover:bg-green-100" : ""
+              }`}
+            >
+              {isActive ? "Activo" : "Inactivo"}
+            </Badge>
+            <span className="text-xs text-muted-foreground">
+              {formattedStart} - {formattedEnd}
+            </span>
           </div>
         );
       },
@@ -170,7 +209,7 @@ function TableProducts({
       size: 80,
     }),
   ];
-  const fuzzyFilter: FilterFn<GetAllProductsResponse> = (row, filterValue) => {
+  const fuzzyFilter: FilterFn<Product> = (row, filterValue) => {
     const searchValue = String(filterValue).toLowerCase();
     const product = row.original;
     if (product.id.toString().toLowerCase().includes(searchValue)) return true;

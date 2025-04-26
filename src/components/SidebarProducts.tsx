@@ -10,11 +10,12 @@ import {
   SidebarMenuButton,
   Sidebar,
 } from "./ui/sidebar";
-import { GetAllCategoriesResponse } from "@/types/GetAllCategoriesResponse";
-import { GetSubcategoriesResponse } from "@/types/GetSubcategoriesResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
+import { GetSubcategoriesResponse } from "@/types/DTOs/GetSubcategoriesResponse";
+import { SubCategory } from "@/types/Category";
 
 type Props = {
-  categories: GetSubcategoriesResponse[];
+  categories: SubCategory[];
   onSelectSubcategory: (subcategoryId: number) => void;
 };
 function SidebarProducts({ categories, onSelectSubcategory }: Props) {

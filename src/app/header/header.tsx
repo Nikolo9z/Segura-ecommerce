@@ -62,7 +62,7 @@ export default function Header() {
       {/* Menú de navegación */}
       <div className="flex items-center">
         <NavigationMenuMain
-          categories={categories.data || []}
+          categories={categories.data|| []}
           navLinks={navLinks.filter((link) => !link.isSearch)}
         />
         {/* Buscador expandible */}

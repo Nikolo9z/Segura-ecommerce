@@ -1,9 +1,9 @@
-import { GetAllCategoriesResponse } from "@/types/GetAllCategoriesResponse";
-import { GetSubcategoriesResponse } from "@/types/GetSubcategoriesResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
+import { GetSubcategoriesResponse } from "@/types/DTOs/GetSubcategoriesResponse";
 import { ICategoryService } from "./interfaces/ICategoryService";
 const api_url = "http://localhost:5068";
 export const CategoryService: ICategoryService = {
-  getCategories: function (): Promise<GetAllCategoriesResponse[]> {
+  getCategories: function (): Promise<GetAllCategoriesResponse> {
     return new Promise((resolve, reject) => {
       fetch(`${api_url}/Product/category/root`, {
         method: "GET",
@@ -22,7 +22,7 @@ export const CategoryService: ICategoryService = {
         .catch((error) => reject(error));
     });
   },
-  getSubcategories: function (id: number): Promise<GetSubcategoriesResponse[]> {
+  getSubcategories: function (id: number): Promise<GetSubcategoriesResponse> {
     return new Promise((resolve, reject) => {
       fetch(`${api_url}/Product/category/${id}/subcategories`, {
         method: "GET",

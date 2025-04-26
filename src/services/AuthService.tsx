@@ -1,12 +1,12 @@
-import { User } from "@/types/user";
+import { LoginResponse } from "@/types/DTOs/LoginResponse";
 import { IAuthService } from "./interfaces/IAuthService";
-import { RegisterRequest } from "@/types/RegisterRequest";
-import { RegisterResponse } from "@/types/RegisterResponse";
+import { RegisterRequest } from "@/types/DTOs/RegisterRequest";
+import { RegisterResponse } from "@/types/DTOs/RegisterResponse";
 
 const api_url = "http://localhost:5068";
 
 export const AuthService: IAuthService = {
-  login: function (email: string, password: string): Promise<User> {
+  login: function (email: string, password: string): Promise<LoginResponse> {
     return new Promise((resolve, reject) => {
       fetch(`${api_url}/User/login`, {
         method: "POST",

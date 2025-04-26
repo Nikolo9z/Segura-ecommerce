@@ -11,10 +11,11 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { GetAllCategoriesResponse } from "@/types/GetAllCategoriesResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
+import { Category } from "@/types/Category";
 
 type NavigationMenuMainProps = {
-  categories: GetAllCategoriesResponse[];
+  categories: Category[];
   navLinks: {
     label: string;
     href: string;
@@ -34,7 +35,7 @@ export default function NavigationMenuMain({
             <NavigationMenuTrigger className="font-clash-medium">
               {category.name.toUpperCase()}
             </NavigationMenuTrigger>
-            <NavigationMenuContent> 
+            <NavigationMenuContent>
               <ul className="grid w-[200px] gap-1 md:w-[300px] md:grid-cols-2 lg:w-[300px] relative z-[999]">
                 {category.subCategories.map((subCategory) => (
                   <ListItem
@@ -42,8 +43,7 @@ export default function NavigationMenuMain({
                     title={subCategory.name}
                     href={`/products/${category.id}/${subCategory.id}`}
                     className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-md"
-                  >
-                  </ListItem>
+                  ></ListItem>
                 ))}
               </ul>
             </NavigationMenuContent>

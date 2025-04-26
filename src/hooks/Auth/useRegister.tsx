@@ -1,6 +1,6 @@
-import { AuthService } from "@/app/services/AuthService";
+import { AuthService } from "@/services/AuthService";
 import { useAuthStore } from "@/stores/AuthStore";
-import { RegisterRequest } from "@/types/RegisterRequest";
+import { RegisterRequest } from "@/types/DTOs/RegisterRequest";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 

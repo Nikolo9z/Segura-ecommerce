@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterRequest } from "@/types/RegisterRequest";
+import { RegisterRequest } from "@/types/DTOs/RegisterRequest";
 import { AlertCircle, Check, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRegister } from "@/hooks/Auth/useRegister";
