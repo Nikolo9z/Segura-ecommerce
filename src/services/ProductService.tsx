@@ -1,11 +1,11 @@
-import { GetProductsByCategoryResponse } from "@/types/DTOs/GetProductsCategoryResponse";
+import { GetProductsByCategoryResponse } from "@/types/DTOs/Product/GetProductsCategoryResponse";
 import { IProductService } from "./interfaces/IProductService";
-import { GetAllProductsResponse } from "@/types/DTOs/GetAllProductsResponse";
-import { CreateProductRequest } from "@/types/DTOs/CreateProductRequest";
-import { CreateProductResponse } from "@/types/DTOs/CreateProductResponse";
-import { UpdateProductRequest } from "@/types/DTOs/UpdateProductRequest";
-import { UpdateProductResponse } from "@/types/DTOs/UpdateProductResponse";
-import { DeleteProductResponse } from "@/types/DTOs/DeleteProductResponse";
+import { GetAllProductsResponse } from "@/types/DTOs/Product/GetAllProductsResponse";
+import { CreateProductRequest } from "@/types/DTOs/Product/CreateProductRequest";
+import { CreateProductResponse } from "@/types/DTOs/Product/CreateProductResponse";
+import { UpdateProductRequest } from "@/types/DTOs/Product/UpdateProductRequest";
+import { UpdateProductResponse } from "@/types/DTOs/Product/UpdateProductResponse";
+import { DeleteProductResponse } from "@/types/DTOs/Product/DeleteProductResponse";
 const api_url = "http://localhost:5068";
 export const ProductService: IProductService = {
   getProducts: function (

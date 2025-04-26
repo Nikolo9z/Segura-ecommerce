@@ -23,11 +23,11 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { CreateProductRequest } from "@/types/DTOs/CreateProductRequest";
+import { CreateProductRequest } from "@/types/DTOs/Product/CreateProductRequest";
 import { Product } from "@/types/Product";
 import { Category } from "@/types/Category";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UpdateProductRequest } from "@/types/DTOs/UpdateProductRequest";
+import { UpdateProductRequest } from "@/types/DTOs/Product/UpdateProductRequest";
 
 const schema = z.object({
   name: z.string().min(1, { message: "El nombre es requerido" }),

@@ -10,8 +10,8 @@ import {
   SidebarMenuButton,
   Sidebar,
 } from "./ui/sidebar";
-import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
-import { GetSubcategoriesResponse } from "@/types/DTOs/GetSubcategoriesResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/Category/GetAllCategoriesResponse";
+import { GetSubcategoriesResponse } from "@/types/DTOs/Category/GetSubcategoriesResponse";
 import { SubCategory } from "@/types/Category";
 
 type Props = {

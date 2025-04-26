@@ -1,5 +1,5 @@
-import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
-import { GetSubcategoriesResponse } from "@/types/DTOs/GetSubcategoriesResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/Category/GetAllCategoriesResponse";
+import { GetSubcategoriesResponse } from "@/types/DTOs/Category/GetSubcategoriesResponse";
 import { ICategoryService } from "./interfaces/ICategoryService";
 const api_url = "http://localhost:5068";
 export const CategoryService: ICategoryService = {

@@ -11,7 +11,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { GetAllCategoriesResponse } from "@/types/DTOs/GetAllCategoriesResponse";
+import { GetAllCategoriesResponse } from "@/types/DTOs/Category/GetAllCategoriesResponse";
 import { Category } from "@/types/Category";
 
 type NavigationMenuMainProps = {

@@ -7,10 +7,10 @@ import { useState } from "react";
 import TableProducts from "../DataTable";
 import ModalProduct from "../ModalProduct";
 import { useAllCategories } from "@/hooks/Category/useAllCategories";
-import { CreateProductRequest } from "@/types/DTOs/CreateProductRequest";
+import { CreateProductRequest } from "@/types/DTOs/Product/CreateProductRequest";
 import { Product } from "@/types/Product";
 import { useCreateProduct } from "@/hooks/Products/useCreateProduct";
-import { UpdateProductRequest } from "@/types/DTOs/UpdateProductRequest";
+import { UpdateProductRequest } from "@/types/DTOs/Product/UpdateProductRequest";
 import { useUpdateProduct } from "@/hooks/Products/useUpdateProduct";
 import { useDeleteProduct } from "@/hooks/Products/useDeleteProduct";
 import {

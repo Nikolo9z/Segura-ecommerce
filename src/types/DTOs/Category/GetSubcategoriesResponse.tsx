@@ -1,4 +1,4 @@
-import { SubCategory } from "../Category";
+import { SubCategory } from "../../Category";
 export interface GetSubcategoriesResponse {
   id: number;
   name: string;
