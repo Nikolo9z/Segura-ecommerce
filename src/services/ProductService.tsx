@@ -6,6 +6,8 @@ import { CreateProductResponse } from "@/types/DTOs/Product/CreateProductRespons
 import { UpdateProductRequest } from "@/types/DTOs/Product/UpdateProductRequest";
 import { UpdateProductResponse } from "@/types/DTOs/Product/UpdateProductResponse";
 import { DeleteProductResponse } from "@/types/DTOs/Product/DeleteProductResponse";
+import { GetProductByIdResponse } from "@/types/DTOs/Product/GetProductByIdResponse";
+
 const api_url = "http://localhost:5068";
 export const ProductService: IProductService = {
   getProducts: function (
@@ -48,8 +50,24 @@ export const ProductService: IProductService = {
         .catch((error) => reject(error));
     });
   },
-  getProductById: function (id: string): Promise<any> {
-    throw new Error("Function not implemented.");
+  getProductById: function (id: string): Promise<GetProductByIdResponse> {
+    return new Promise((resolve, reject) => {
+      fetch(`${api_url}/Product/get/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch product");
+          }
+          return response.json();
+        })
+        .then((product) => resolve(product))
+        .catch((error) => reject(error));
+    });
   },
   createProduct: function (
     product: CreateProductRequest

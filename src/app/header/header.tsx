@@ -32,8 +32,10 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: "/products", label: "PRODUCTOS" },
-    { href: "/buscar", label: "BUSCAR", isSearch: true }, // Nuevo enlace para búsqueda
+    { href: "/buscar", label: "BUSCAR", isSearch: true },
+    { href: "/ofertas", label: "OFERTAS" },
+    { href: "/mas-vendidos", label: "MAS VENDIDOS" },
+    { href: "/quienes-somos", label: "QUIENES SOMOS" },
     { href: "/contacto", label: "CONTACTO" },
   ];
 
@@ -121,13 +123,14 @@ export default function Header() {
               <DropdownMenuContent className="cursor-pointer">
                 <DropdownMenuLabel>{user.user?.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push("/admin/products/list")}>
+                <DropdownMenuItem
+                  onClick={() => router.push("/admin/products/list")}
+                >
                   Productos
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => user.logout()}>
                   Logout
                 </DropdownMenuItem>
-
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
