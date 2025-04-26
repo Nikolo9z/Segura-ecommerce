@@ -6,4 +6,5 @@ export interface IAuthService {
   login: (email: string, password: string) => Promise<LoginResponse>;
   logout: () => Promise<any>;
   register: (register: RegisterRequest) => Promise<RegisterResponse>;
+  refresh: () => Promise<LoginResponse>;
 }

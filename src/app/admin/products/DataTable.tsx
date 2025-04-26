@@ -12,7 +12,7 @@ import {
   Table,
 } from "@/components/ui/table";
 import { Product } from "@/types/Product";
-import { formatDate } from "@/utils/formatDate";
+import { formatDate } from "@/lib/formatDate";
 import {
   createColumnHelper,
   FilterFn,
