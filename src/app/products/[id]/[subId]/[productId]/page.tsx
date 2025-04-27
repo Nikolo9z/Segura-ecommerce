@@ -22,12 +22,6 @@ export default function ProductDetailPage() {
     router.back();
   };
 
-  // Función para agregar al carrito (implementación básica)
-  const handleAddToCart = () => {
-    alert("Producto añadido al carrito");
-    // Aquí se implementaría la lógica real para añadir al carrito
-  };
-
   if (isLoading) {
     return (
       <div className="container mx-auto flex flex-col items-center justify-center py-10">
@@ -145,10 +139,12 @@ export default function ProductDetailPage() {
                 <div className="pt-4">
                   <Button
                     size="lg"
-                    onClick={() => cartStore.addToCart({
-                      ...product,
-                      quantity: 0
-                    })}
+                    onClick={() =>
+                      cartStore.addToCart({
+                        ...product,
+                        quantity: 0,
+                      })
+                    }
                     disabled={product.stock <= 0}
                     className="w-full font-clash-medium"
                   >

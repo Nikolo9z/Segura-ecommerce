@@ -2,13 +2,20 @@ import React from "react";
 import { useCartStore } from "@/stores/CartStore";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Trash2, X, Plus, Minus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 function Cart() {
   const { cart, addToCart, removeFromCart, clearCart, removeItem, totalCart } =
     useCartStore();
   const [isOpen, setIsOpen] = React.useState(false);
+  const router = useRouter();
 
   const toggleCart = () => setIsOpen(!isOpen);
+
+  const handleCheckout = () => {
+    setIsOpen(false);
+    router.push("/checkout");
+  };
 
   return (
     <div
@@ -18,7 +25,6 @@ function Cart() {
       {/* Botón del carrito */}
       <div
         onClick={toggleCart}
-        
         className="flex justify-center items-center space-x-4 cursor-pointer hover:text-gray-400"
       >
         Carrito
@@ -64,7 +70,7 @@ function Cart() {
                           height={64}
                           className="object-cover w-full h-full"
                         />
-                      ) : (
+                      ) : ( 
                         <div className="w-full h-full flex items-center justify-center bg-gray-200">
                           <ShoppingBag size={24} className="text-gray-400" />
                         </div>
@@ -113,7 +119,10 @@ function Cart() {
                   <span className="font-semibold">${totalCart()}</span>
                 </div>
                 <div className="mt-4 space-y-2">
-                  <Button className="w-full  hover:bg-gray-50 ">
+                  <Button
+                    className="w-full hover:foreground"
+                    onClick={handleCheckout}
+                  >
                     Ir al Checkout
                   </Button>
                   <Button

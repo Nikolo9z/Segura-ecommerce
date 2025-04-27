@@ -68,8 +68,8 @@ export const useCartStore = create(
       },
     }),
     {
-      name: "cart-storage", // Nombre para identificar en localStorage
-      skipHydration: false, // No omitir la hidratación del estado
+      name: "cart-storage",
+      skipHydration: false,
     }
   )
 );
