@@ -42,22 +42,12 @@ export default function Header() {
 
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Este efecto se ejecuta solo en el lado del cliente
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Maneja la búsqueda
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implementa tu lógica de búsqueda aquí
-    console.log("Buscando:", searchQuery);
-    // Opcional: redireccionar a la página de resultados
-    // router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
-  };
 
   // Determina qué logo usar basado en el tema
   const logoSrc =
@@ -76,40 +66,6 @@ export default function Header() {
           categories={categories.data || []}
           navLinks={navLinks.filter((link) => !link.isSearch)}
         />
-        {/* Buscador expandible */}
-        <div
-          className={`transition-all duration-300 overflow-hidden ${
-            searchOpen ? "w-60 opacity-100 mr-4" : "w-0 opacity-0"
-          }`}
-        >
-          <form onSubmit={handleSearch} className="relative">
-            <Input
-              type="text"
-              placeholder="Buscar productos..."
-              className="pr-8 h-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              aria-label="Buscar"
-            >
-              <Search className="h-4 w-4" />
-            </button>
-          </form>
-        </div>
-
-        {/* Botón de búsqueda */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mr-2"
-          onClick={() => setSearchOpen(!searchOpen)}
-        >
-          <Search className="h-4 w-4 mr-1" />
-          Buscar
-        </Button>
       </div>
       <Cart/>
 
